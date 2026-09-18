@@ -1,0 +1,137 @@
+{
+  "title": "The Never Contract",
+  "tagline": "Numbered promises. The enforceable ones fail our deploy.",
+  "note": "SINGLE SOURCE OF TRUTH. Read by scripts/never-checks.ts (the check runner) and by flick-site/pages/never.page.mjs (the public page + /never.json). Edit clauses here and nowhere else. A 'ci' clause MUST name a check that exists today; never-checks N5 fails the build otherwise.",
+  "clauses": [
+    {
+      "id": 1,
+      "slug": "paywall-copy",
+      "text": "Our paywall can never promise more than the code actually grants.",
+      "tier": "ci",
+      "check": "entitlements:smoke",
+      "mechanism": "The entitlements smoke test asserts every benefit line in the iOS paywall equals the plan quota hard-coded in server/entitlements.ts, and fails the build if they drift; it runs in CI on every push and pull request.",
+      "web": "CI",
+      "ios": "post-release audit"
+    },
+    {
+      "id": 2,
+      "slug": "billing-sdk",
+      "text": "The web app can never quietly carry the App Store billing SDK.",
+      "tier": "ci",
+      "check": "ci.yml dist grep",
+      "mechanism": "CI greps the built web bundle and fails if the App Store billing SDK (react-native-purchases / RNPurchases) is present; it runs in GitHub Actions on every push and pull request.",
+      "web": "CI",
+      "ios": "n/a — the native app uses StoreKit by design"
+    },
+    {
+      "id": 3,
+      "slug": "share-receipt",
+      "text": "The caught-up share receipt can never claim numbers beyond hard-coded bounds, and its page and preview image can never disagree.",
+      "tier": "ci",
+      "check": "og:smoke",
+      "mechanism": "The og:smoke test asserts the caught-up receipt's numbers are clamped to hard bounds (≤5000 cleared, ≤500 senders) and that its /r page and /og/receipt preview image are both derived from one shared contract; it runs in CI on every push and pull request.",
+      "web": "CI",
+      "ios": "post-release audit"
+    },
+    {
+      "id": 4,
+      "slug": "no-streak",
+      "text": "We will never add a streak.",
+      "tier": "ci",
+      "check": "never-checks N1",
+      "mechanism": "never-checks N1 scans the app's source (comments stripped) for streak, daily-goal and “don't break the chain” language and fails on any match; it runs in CI and before every site deploy.",
+      "web": "CI + deploy",
+      "ios": "post-release audit"
+    },
+    {
+      "id": 5,
+      "slug": "no-infinite-scroll",
+      "text": "The deck can never become an infinite scroll.",
+      "tier": "ci",
+      "check": "never-checks N2",
+      "mechanism": "never-checks N2 scans the deck screens for infinite-scroll primitives (FlatList onEndReached, InfiniteScroll) and fails on any match; it runs in CI and before every site deploy.",
+      "web": "CI + deploy",
+      "ios": "post-release audit"
+    },
+    {
+      "id": 6,
+      "slug": "no-reengagement",
+      "text": "We will never send you a re-engagement or win-back notification.",
+      "tier": "ci",
+      "check": "never-checks N3",
+      "mechanism": "never-checks N3 scans the app and server for re-engagement, win-back and come-back-notification code and fails on any match; it runs in CI and before every site deploy.",
+      "web": "CI + deploy",
+      "ios": "post-release audit"
+    },
+    {
+      "id": 7,
+      "slug": "no-sell-data",
+      "text": "We will never sell your data.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "A promise, not a proof — nothing in our pipeline can machine-verify a data sale never happened. Our business model (paid subscriptions, no ad network) removes the incentive, and our privacy policy states it plainly.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 8,
+      "slug": "no-train-on-mail",
+      "text": "We will never train AI on your mail.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "A promise — your email is sent request-scoped to draft one reply and is never retained as training data, by us or on our instruction. We cannot yet machine-prove a negative, so this carries no badge.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 9,
+      "slug": "no-send-from-account",
+      "text": "We will never send email from your account.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "Architectural: Flick's OAuth mail scope is read-and-draft only, so approved replies are saved as drafts in your own mailbox for you to send. We hold this as a promise rather than a badge because not every connection type is send-blocked by a single machine check.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 10,
+      "slug": "no-ads",
+      "text": "We will never show you ads.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "A promise — Flick ships no ad network, no ad SDK and no IDFA tracking on iOS. There's no ad code path to gate, so this carries no badge.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 11,
+      "slug": "no-leaderboard-or-badge",
+      "text": "We will never add a leaderboard or a badge that counts up.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "A promise for the leaderboard and count-up-badge half of our anti-gamification stance. The other half — “never add a streak” — is the CI-enforced clause above.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 12,
+      "slug": "no-session-length-metric",
+      "text": "We will never make session length a success metric.",
+      "tier": "policy",
+      "check": null,
+      "mechanism": "A promise — time-in-app is not a goal we optimize; there is no “time well spent” target in the product and no such metric drives the roadmap. Not yet machine-checkable, so no badge.",
+      "web": "policy",
+      "ios": "policy"
+    },
+    {
+      "id": 13,
+      "slug": "terminus-honesty",
+      "text": "When Flick reaches the end of the deck, we will never claim we closed your inbox for you.",
+      "tier": "ci",
+      "check": "never-checks N4",
+      "mechanism": "never-checks N4 fails the build if the end-of-deck copy in lib/terminus.ts ever claims Flick “closed” your inbox for you (rather than that you closed Flick); it runs in CI and before every site deploy. If that copy module is ever removed, N5 fails the build so this badge can never outlive its check.",
+      "web": "CI + deploy",
+      "ios": "post-release audit"
+    }
+  ]
+}
