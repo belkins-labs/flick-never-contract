@@ -1,5 +1,10 @@
 # The Never Contract — public mirror of the checks
 
+[![Never Contract](https://img.shields.io/endpoint?url=https://flicked.email/never/badge.json)](https://flicked.email/never)
+
+The badge is rewritten by each flicked.email deploy from https://flicked.email/never/runs.json — it
+reports the last deploy's result and the app commit it ran on, not this minute's state.
+
 This repository is a verbatim copy of two files from Flick's private app repository, published so
 the promises at https://flicked.email/never can be inspected rather than taken on trust:
 
@@ -14,10 +19,11 @@ the promises at https://flicked.email/never can be inspected rather than taken o
 
 ## Provenance
 
-Copied from the app repository at commit `75f6a7ad7276da9ee93960eb416a791b4279ebef` (see `SOURCE`). The mirror is refreshed by hand
-when the checks change; the run log names the commit it ran against, so compare the two before
-trusting either. A copy cannot prove the private CI ran it — that limitation is stated on the
-page itself under "Ways this page could still lie".
+Copied from the app repository at commit `7bf3f4c670a9f4d41c31b65e2d087a32f01c095b` on 2026-09-19 (see `SOURCE`). The copy is
+pushed by the flicked.email deploy pipeline (`scripts/mirror-sync.mjs` in the site repository) right
+after each production deploy, so this commit and the one named in the run log should match — compare
+the two before trusting either. A copy cannot prove the private CI ran it — that limitation is stated
+on the page itself under "Ways this page could still lie".
 
 ## Running
 
