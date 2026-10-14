@@ -19,7 +19,7 @@ the promises at https://flicked.email/never can be inspected rather than taken o
 
 ## Provenance
 
-Copied from the app repository at commit `7bf3f4c670a9f4d41c31b65e2d087a32f01c095b` on 2026-09-19 (see `SOURCE`). The copy is
+Copied from the app repository at commit `f5f63cd958863ef2f2fc460c203c9e686bbbab4d` on 2026-10-14 (see `SOURCE`). The copy is
 pushed by the flicked.email deploy pipeline (`scripts/mirror-sync.mjs` in the site repository) right
 after each production deploy, so this commit and the one named in the run log should match — compare
 the two before trusting either. A copy cannot prove the private CI ran it — that limitation is stated
